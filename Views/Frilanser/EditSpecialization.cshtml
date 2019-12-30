@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model ProsjektoppgaveITE1811Gruppe7.Models.ViewModels.ChangeRoleViewModel
+@{
+    ViewData["Title"] = "EditSpecialization";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <h1>Edit Specialization for @Model.UserEmail</h1>
+
+<form asp-action="EditSpecialization" method="post">
+    <input type="hidden" name="userId" value="@Model.UserId" />
+    <div class="form-group">
+        @foreach (IdentityRole role in Model.AllRoles)
+        {
+            <input type="checkbox" name="roles" value="@role.Name"
+                   @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
+            }
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <div>
+        <a asp-action="Index">Back to my orders</a>
+    </div>
+</form>

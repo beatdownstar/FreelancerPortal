@@ -1,0 +1,137 @@
+﻿@model ProsjektoppgaveITE1811Gruppe7.Models.ViewModels.OrderDetails
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    <h3>Order details</h3>
+
+    <div class="card" style="margin-bottom: 1rem;">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OrderId)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.OrderId)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DateCreated)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DateCreated)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DateOfDeadline)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DateOfDeadline.Day).@Html.DisplayFor(model => model.DateOfDeadline.Month).@Html.DisplayFor(model => model.DateOfDeadline.Year)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OrderName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.OrderName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.OrderTask)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.OrderTask)
+                </dd>
+                @if (Model.Frilanser.UserName != null)
+                {
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Frilanser.UserName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Frilanser.UserName)
+                    </dd>
+                }
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.NumberOfStrings)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.NumberOfStrings)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd class="col-sm-10">
+                    @switch (Model.Status)
+                    {
+                        case 0:
+                            <div>Order created</div>
+                            break;
+                        case 1:
+                            <div>Solution uploaded</div>
+                            break;
+                        case 2:
+                            <div>Approved by Senior Developer</div>
+                            break;
+                        case 4:
+                            <div>Approved by Client</div>
+                            break;
+                        default:
+                            <div>Order created</div>
+                            break;
+                    }
+                </dd>
+                @if (Model.SpecializationRoleName != null)
+                {
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.SpecializationRoleName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.SpecializationRoleName)
+                    </dd>
+                }
+            </dl>
+        </div>
+    </div>
+
+</div>
+
+<h5>Solution:</h5>
+<div class="card" style="margin-bottom: 1rem;">
+    <div class="card-body">
+        @if (Model.SolutionStrings != null)
+        {
+
+
+            @foreach (string strings in Model.SolutionStrings)
+            {
+                <p>@strings</p>
+            }
+
+        }
+        else
+        {
+            <p>No solution yet.</p>
+        }
+
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        @if (Model.SolutionStrings != null)
+        {
+
+            <a asp-action="GetFile" type="button" class="btn btn-primary" asp-route-id="@Model.SolutionFileId">Get it</a>
+
+        }
+
+        @if (Model.Status != 2)
+        {
+
+            <a asp-action="AproveSolution" type="button" class="btn btn-primary" asp-route-id="@Model.OrderId">Approve solution</a>
+
+        }
+
+
+        <a asp-action="Index" style="margin-left: 1rem;">Back to my orders</a>
+    </div>
+</div>

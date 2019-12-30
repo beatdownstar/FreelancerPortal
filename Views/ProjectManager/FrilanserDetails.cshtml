@@ -1,0 +1,118 @@
+﻿@model ProsjektoppgaveITE1811Gruppe7.Models.ViewModels.FrilanserDetailsViewModel
+
+@{
+    ViewData["Title"] = "FrilanserDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Frilanser details</h3>
+
+<div class="card" style="width: 36rem; margin-bottom: 1rem;">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col">
+                @Html.DisplayNameFor(model => model.FrilanserName)
+            </dt>
+            <dd class="col">
+                @Html.DisplayFor(model => model.FrilanserName)
+            </dd>
+        </dl>
+    </div>
+</div>
+<div class="card" style="width: 36rem; margin-bottom: 1rem;">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th> @Html.DisplayNameFor(model => model.FrilanserMonthStrings)</th>
+            </tr>
+            <tr>
+                <th>Period</th>
+                <th>Total</th>
+                <th> Amount (LiteCoins)</th>
+                <th> Monthly Payments</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.FrilanserMonthStrings)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Period)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NumberOfStrings)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+                    <td>
+                        @if (DateTime.Parse(item.Period).Year <= DateTime.Now.Year && DateTime.Parse(item.Period).Month < DateTime.Now.Month)
+                        {
+                            @if (!item.Status)
+                            {
+                                <form asp-action="PayToFrilancer">
+                                    <input type="hidden" asp-for="@Model.FrilanserName" />
+                                    <input type="hidden" asp-for="@item.Period" />
+                                    <input type="hidden" asp-for="@item.NumberOfStrings" />
+                                    <input type="hidden" asp-for="@item.Amount" />
+                                    <div class="form-group">
+                                        <input type="submit" value="Pay" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                <div> Payd </div>
+                            }
+                        }
+                        else
+                        {<div>You can pay in next month</div>}
+                    </td>
+
+                </tr>
+
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card" style="width: 36rem; margin-bottom: 1rem;">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th> @Html.DisplayNameFor(model => model.ClientSumStrings)</th>
+                </tr>
+                <tr>
+                    <th>Client name</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ClientSumStrings)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClientName)
+                        </td>
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.SummOfStrings)
+
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to list of persons</a>
+</div>
+
+

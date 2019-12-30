@@ -1,0 +1,55 @@
+﻿@model ProsjektoppgaveITE1811Gruppe7.Models.ViewModels.UploadSolutionViewModel
+
+<h1>Details</h1>
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Order details</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="TakeOrder">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="OrderId" type="hidden" class="form-control" />
+            </div>
+            <div class="card" style="width: 32rem; margin-bottom: 1rem;">
+                <div class="card-body">
+                    <label asp-for="OrderName" class="card-title"></label>:
+                    @Html.DisplayFor(model => model.OrderName)<br>
+                    <label asp-for="ClientName" class="card-title"></label>:
+                    @Html.DisplayFor(model => model.ClientName)<br>
+                    <label asp-for="DateOfDeadline" class="card-title"></label>:
+                    @Html.DisplayFor(model => model.DateOfDeadline.Day).@Html.DisplayFor(model => model.DateOfDeadline.Month).@Html.DisplayFor(model => model.DateOfDeadline.Year)
+
+                </div>
+            </div>
+            <h5><label asp-for="OrderTask" class="control-label"></label>:</h5>
+            <div class="card" style="width: 32rem; margin-bottom: 1rem;">
+                <div class="card-body">
+
+                    @Html.DisplayFor(model => model.OrderTask)
+                </div>
+            </div>
+            <h5>Take this order:</h5>
+            <div class="card" style="width: 32rem; margin-bottom: 1rem;">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <a asp-action="TakeOrder" asp-route-id="@Model.OrderId">"Take it"</a>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to my orders</a>
+</div>

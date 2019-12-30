@@ -1,0 +1,91 @@
+﻿@model IEnumerable<ProsjektoppgaveITE1811Gruppe7.Models.Entities.Order>
+
+@{
+    ViewData["Title"] = "Orders to check";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Orders to check</h1>
+
+
+<div class="card" style="margin-bottom: 1rem;">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateCreated)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateOfDeadline)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderName)
+                    </th>
+                    <th>
+                        Frilanser
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateCreated)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateOfDeadline.Day).@Html.DisplayFor(modelItem => item.DateOfDeadline.Month).@Html.DisplayFor(modelItem => item.DateOfDeadline.Year)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderName)
+                        </td>
+                        @if (item.Frilanser == null)
+                        {
+                            <td>
+                                Not assigned
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Frilanser.UserName)
+
+                            </td>
+                        }
+                    <td>
+                        @switch (item.Status)
+                        {
+                            case 0:
+                                <div>Order created</div>
+                                break;
+                            case 1:
+                                <div>Solution uploaded</div>
+                                break;
+                            case 2:
+                                <div>Approved by Senior Developer</div>
+                                break;
+                            case 4:
+                                <div>Approved by Client</div>
+                                break;
+                            default:
+                                <div>Order created</div>
+                                break;
+                        }
+                    </td>
+                        <td>
+
+                            <a asp-action="Details" asp-route-id="@item.OrderId">Details</a>
+                            
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

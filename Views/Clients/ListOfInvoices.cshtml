@@ -1,0 +1,92 @@
+﻿@model ProsjektoppgaveITE1811Gruppe7.Models.ViewModels.ClientsInvoicesViewModel
+
+@{
+    ViewData["Title"] = "ListOfInvoicesAsync";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Invoices</h3>
+<hr />
+<div class="card" style="margin-bottom: 1rem;">
+    <div class="card-body">
+        <div>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PriceForString) 
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PriceForString) Litecoins
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>
+                            Order Id
+                        </th>
+                        <th>
+                            Order name
+                        </th>
+                        <th>
+                            Frilanser
+                        </th>
+                        <th>
+                            Number of strings
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.invoices)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.order.OrderId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.order.OrderName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.order.Frilanser.UserName)
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.order.NumberOfStrings)
+
+                            </td>
+                            <td>
+
+                                @Html.DisplayFor(modelItem => item.Amount)
+
+                            </td>
+                            <td>
+
+                                <a asp-action="Pay" asp-route-id="@item.order.OrderId" type="button" class="btn btn-primary btn-xs">Pay</a>
+
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to my orders</a>
+</div>
+
+<style>
+    .btn-group-xs > .btn, .btn-xs {
+        padding: .25rem .4rem;
+        font-size: .875rem;
+        line-height: .9;
+        border-radius: .2rem;
+    }
+</style>

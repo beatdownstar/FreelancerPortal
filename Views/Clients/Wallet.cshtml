@@ -1,0 +1,85 @@
+﻿@model ProsjektoppgaveITE1811Gruppe7.Models.ViewModels.WalletViewModel
+
+@{
+    ViewData["Title"] = "Wallet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Wallet</h1>
+
+
+@if (Model.Balance != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Balance)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.Balance)
+                </td>
+
+            </tr>
+
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    "Time"
+                </th>
+                <th>
+                    "Amount sent"
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Transactions.Count != 0)
+            {
+
+                @foreach (KeyValuePair<long, string> item in Model.Transactions)
+                {
+                    <tr>
+                        <td>
+                            @Html.Raw(new DateTime(1970, 1, 1).AddSeconds(item.Key))
+
+                        </td>
+                        <td>
+                            @Html.Raw(item.Value)
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        "NO Trans"
+
+                    </td>
+                    <td>
+                        "NO Trans"
+                    </td>
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+}
+else
+{
+    <p>
+        <a asp-action="CreateWallet">Create Wallet</a>
+    </p>
+}

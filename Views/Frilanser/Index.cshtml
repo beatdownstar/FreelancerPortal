@@ -1,0 +1,190 @@
+﻿@model IEnumerable<ProsjektoppgaveITE1811Gruppe7.Models.Entities.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>My orders</h3>
+<br>
+<a asp-action="EditSpecialization">Edit My Specialization</a>
+<br>
+
+
+<a asp-action="Wallet">Wallet</a>
+<br>
+
+<div class="card" style="margin-bottom: 1rem;">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Clients name
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateCreated)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateOfDeadline)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    @if (item.Frilanser != null)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateCreated)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfDeadline.Day).@Html.DisplayFor(modelItem => item.DateOfDeadline.Month).@Html.DisplayFor(modelItem => item.DateOfDeadline.Year)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderName)
+                            </td>
+                            <td>
+                                @switch (item.Status)
+                                {
+                                    case 0:
+                                        <div>Order created</div>
+                                        break;
+                                    case 1:
+                                        <div>Solution uploaded</div>
+                                        break;
+                                    case 2:
+                                        <div>Approved by Senior Developer</div>
+                                        break;
+                                    case 4:
+                                        <div>Approved by Client</div>
+                                        break;
+                                    default:
+                                        <div>Order created</div>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="UploadSolution" asp-route-id="@item.OrderId">Details</a>
+
+                            </td>
+
+                            <td>
+
+                                <a asp-action="ChatWithClient" asp-route-id="@item.OrderId">ChatWithClient</a>
+                                <span id="newmessage_@item.OrderId" class="badge badge-pill badge-danger d-none">New</span>
+
+
+
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br>
+<h3>Free orders</h3>
+<br>
+<div class="card" style="margin-bottom: 1rem;">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Clients name
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateCreated)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DateOfDeadline)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SpecializationRole)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    @if (item.Frilanser == null)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateCreated)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfDeadline.Day).@Html.DisplayFor(modelItem => item.DateOfDeadline.Month).@Html.DisplayFor(modelItem => item.DateOfDeadline.Year)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderName)
+                            </td>
+                            <td>
+                                @if (item.SpecializationRole != null)
+                                {
+                                    @Html.DisplayFor(modelItem => item.SpecializationRole.Name)
+                                }
+                                else
+                                {
+                                    <div> No Specialization </div>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+    });
+
+
+    connection.on("UpdateMessages", function (dateCreated, message, messageId, orderId, userName) {
+
+        $('#newmessage_' + orderId).removeClass("d-none");
+
+
+
+    });
+
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
+
+
+
+
+</script>

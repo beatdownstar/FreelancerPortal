@@ -1,0 +1,89 @@
+﻿@model ProsjektoppgaveITE1811Gruppe7.Models.ViewModels.NewOrderViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Create order</h3>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderName" class="control-label"></label>
+                <input asp-for="OrderName" class="form-control" />
+                <span asp-validation-for="OrderName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderTask" class="control-label"></label>
+                <input asp-for="OrderTask" class="form-control" />
+                <span asp-validation-for="OrderTask" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfDeadline" class="control-label"></label>
+                <input asp-for="DateOfDeadline" class="form-control" />
+                <span asp-validation-for="DateOfDeadline" class="text-danger"></span>
+            </div>
+           
+
+            <div class="form-group" id="FrilanserIdDiv">
+                <label asp-for="FrilanserId" class="control-label"></label>
+                <select class="browser-default custom-select" asp-for="FrilanserId"
+                        asp-items="@(new SelectList(Model.Frilansers, "Id", "UserName"))" OnChange='DisableSpecialization()' id="FrilanserId">
+                    <option value="null">Please select one</option>
+                </select>
+            </div>
+            <div class="form-group" id="SpecializationDiv">
+                <label>Spesialization</label>
+                <select class="browser-default custom-select" asp-for="SpecializationRoleId"
+                        asp-items="@(new SelectList(Model.SpecializationRoles, "Id", "Name"))" OnChange='DisableFrilanserId()' id="SpecializationId">
+                    <option value=null>Please select one</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="test">
+
+</div>
+
+<div>
+    <a asp-action="Index">Back to my orders</a>
+</div>
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+
+
+    function DisableSpecialization() {
+
+        var e = document.getElementById("FrilanserId");
+
+        if (e.options[e.selectedIndex].value == "null") {
+            $('#SpecializationDiv').show();
+
+        } else {
+            $('#SpecializationDiv').hide();
+        }
+    }
+
+    function DisableFrilanserId() {
+        var e = document.getElementById("SpecializationId");
+
+        if (e.options[e.selectedIndex].value == "null") {
+            $('#FrilanserIdDiv').show();
+
+        } else {
+            $('#FrilanserIdDiv').hide();
+        }
+    }
+
+</script>

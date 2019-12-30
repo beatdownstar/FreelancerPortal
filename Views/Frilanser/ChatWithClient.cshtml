@@ -1,0 +1,95 @@
+﻿@model ProsjektoppgaveITE1811Gruppe7.Models.Entities.ChatMessageModel
+@{
+    ViewData["Title"] = "ChatWithClient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container">
+    <div>
+        <h4> Chat </h4>
+    </div>
+    <div id="messages">
+    </div>
+
+    <input id="messageToSend" class="form-control" placeholder="Write a message">
+    <input type="button" id="sendMessage" value="send" class="btn btn-primary" />
+</div>
+
+<script src="/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function ()
+    {
+        getMessages();
+    });
+
+
+    $('#sendMessage').on('click', function()  {
+
+        message = { "Content": $('#messageToSend').val(), "OrderId": @ViewBag.OrderId};
+
+            $.ajax(
+                 {
+                         type: "POST",
+                         url: "/api/Chat/",
+                         data: JSON.stringify(message),
+                         contentType: "application/json;charset=utf-8",
+                         dataType: 'json',
+                         success: function (result) {
+                                    $('#messageToSend').val("");
+
+                                },
+
+                    error: function (req, status, error) {
+                         $("#update").html("AJAX ERROR");
+                    }
+                 });
+    });
+
+    function getMessages() {
+        $.getJSON('/api/Chat/@ViewBag.OrderId', function (data) {
+            $.each(data, function (index, element) {
+                $('#messages').append($("<div id=message" + element.messageId + ">"));
+                $('#message' + element.messageId).append($('<b>', { text: element.content }));
+                $('#message' + element.messageId).append($("<br>"));
+                $('#message' + element.messageId).append($('<small>', { text: element.dateCreated}));
+                $('#message' + element.messageId).append($('<hr/>'));
+            });
+        });
+    }
+
+     connection.start().catch(function (err) {
+    return console.error(err.toString());
+     });
+
+    connection.on("UpdateMessages", function (dateCreated, message, messageId, orderId, userName) {
+        if (orderId == @ViewBag.OrderId) {
+            $('#messages').append($("<div id=message" + messageId + ">"));
+           $('#message' + messageId).append($('<b>', { text: message }));
+           $('#message' + messageId).append($("<br>"));
+           $('#message' + messageId).append($('<small>', { text: dateCreated }));
+           $('#message' + messageId).append($('<hr/>'));
+        }
+
+    });
+
+    
+
+     document.getElementById("sendMessage").addEventListener("click", function (event) {
+          var messageId = $("#messages").children().length + 1;
+          var message = document.getElementById("messageToSend").value;
+
+      connection.invoke("UpdateForNewMessages", message, messageId, @ViewBag.OrderId, '@ViewBag.ClientName').catch(function (err) {
+        return console.error(err.toString());
+          });
+         
+           event.preventDefault();
+    });
+
+
+</script>

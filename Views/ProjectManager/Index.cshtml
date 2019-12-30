@@ -1,0 +1,64 @@
+﻿@model ProsjektoppgaveITE1811Gruppe7.Models.ViewModels.ProjectManagerIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div>
+    <a asp-action="Wallet">Wallet</a>
+    </div>
+
+    <div>
+        <a asp-controller="Roles" asp-action="Index">Change Roles</a>
+    </div>
+
+<h3>List of persons</h3>
+<div class="row">
+    <div class="card" style="width: 32rem; margin-bottom: 1rem; margin-right: 1rem;">
+        <div class="card-body">
+            <h5>Clients</h5>
+
+            <table class="table">
+
+                <tbody>
+                    @foreach (var item in Model.Clients)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                <a asp-action="ClientDetails" asp-route-id="@item.Id">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card" style="width: 32rem; margin-bottom: 1rem;">
+        <div class="card-body">
+            <h5>Frilansers</h5>
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model.Frilansers)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+
+                                <a asp-action="FrilanserDetails" asp-route-id="@item.Id">Details</a>
+
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
